@@ -31,28 +31,21 @@ export default function PlanetasListScreen() {
     router.push({ pathname: "/Forms/Formulario" });
   };
 
-  // Ao lado do +, coloque um - para limpar os dados salvos totalmente
+// Requisito 5: Função associada ao botão "-" para limpar e atualizar a tela na hora
   const limparTodosOsDados = async () => {
-    Alert.alert(
-      "Limpar LanHouses",
-      "Tem certeza que deseja apagar todos os repositórios salvos?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Limpar Tudo",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await AsyncStorage.removeItem("@LanHouses:lanhouses");
-              setLanHouses([]);
-              Alert.alert("Sucesso", "Todos os dados foram apagados!");
-            } catch (error) {
-              Alert.alert("Erro", "Não foi possível limpar os dados.");
-            }
-          }
-        }
-      ]
-    );
+    try {
+      // 1. Remove a chave do banco local para os dados não voltarem ao reabrir o app
+      await AsyncStorage.removeItem("@LanHouses:lanhouses");
+      
+      // 2. Atualiza o estado do React para ZERAR a lista na tela imediatamente
+      setLanHouses([]);
+      
+      // 3. Exibe o aviso de sucesso para ficar bonito no vídeo
+      Alert.alert("Sucesso", "Todos os dados foram apagados!");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro", "Não foi possível limpar os dados.");
+    }
   };
 
   return (
